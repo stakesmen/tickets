@@ -1,0 +1,45 @@
+{
+  "name": "nextApp",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/nextApp",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "dependsOn": [
+        "^build",
+        "build-custom-server"
+      ]
+    },
+    "build-custom-server": {
+      "executor": "@nx/js:swc",
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/nextApp",
+        "main": "apps/nextApp/server/main.ts",
+        "tsConfig": "apps/nextApp/tsconfig.server.json",
+        "clean": false,
+        "assets": []
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve-custom-server": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "nextApp:build-custom-server"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "nextApp:build-custom-server:development"
+        },
+        "production": {
+          "buildTarget": "nextApp:build-custom-server:production"
+        }
+      }
+    }
+  }
+}
